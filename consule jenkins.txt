@@ -1,0 +1,190 @@
+Started by user akash v b
+Obtained Jenkinsfile from git https://github.com/akashvb531/trend_store
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Still waiting to schedule task
+Waiting for next available executor
+Running on Jenkins in /var/lib/jenkins/workspace/trend-store-pipeline
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+The recommended git tool is: git
+using credential github-token
+Cloning the remote Git repository
+Cloning repository https://github.com/akashvb531/trend_store
+ > git init /var/lib/jenkins/workspace/trend-store-pipeline # timeout=10
+Fetching upstream changes from https://github.com/akashvb531/trend_store
+ > git --version # timeout=10
+ > git --version # 'git version 2.43.0'
+using GIT_ASKPASS to set credentials 
+ > git fetch --tags --force --progress -- https://github.com/akashvb531/trend_store +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url https://github.com/akashvb531/trend_store # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+Avoid second fetch
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+Checking out Revision e30949ed69c19665d694bbbbcdf364296f36cd74 (refs/remotes/origin/main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f e30949ed69c19665d694bbbbcdf364296f36cd74 # timeout=10
+Commit message: "Update Jenkinsfile with Docker build and push pipeline"
+First time build. Skipping changelog.
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Checkout)
+[Pipeline] checkout
+The recommended git tool is: git
+using credential github-token
+ > git rev-parse --resolve-git-dir /var/lib/jenkins/workspace/trend-store-pipeline/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/akashvb531/trend_store # timeout=10
+Fetching upstream changes from https://github.com/akashvb531/trend_store
+ > git --version # timeout=10
+ > git --version # 'git version 2.43.0'
+using GIT_ASKPASS to set credentials 
+ > git fetch --tags --force --progress -- https://github.com/akashvb531/trend_store +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+Checking out Revision e30949ed69c19665d694bbbbcdf364296f36cd74 (refs/remotes/origin/main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f e30949ed69c19665d694bbbbcdf364296f36cd74 # timeout=10
+Commit message: "Update Jenkinsfile with Docker build and push pipeline"
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Build Docker Image)
+[Pipeline] sh
++ docker build -t akashvb/trend-static-app:latest .
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  18.49MB
+
+Step 1/5 : FROM nginx:alpine
+alpine: Pulling from library/nginx
+9824c27679d3: Pulling fs layer
+a5585638209e: Pulling fs layer
+fd372c3c84a2: Pulling fs layer
+958a74d6a238: Pulling fs layer
+c1d2dc189e38: Pulling fs layer
+828fa206d77b: Pulling fs layer
+bdaad27fd04a: Pulling fs layer
+f23865b38cc6: Pulling fs layer
+c1d2dc189e38: Waiting
+828fa206d77b: Waiting
+bdaad27fd04a: Waiting
+f23865b38cc6: Waiting
+958a74d6a238: Waiting
+fd372c3c84a2: Verifying Checksum
+fd372c3c84a2: Download complete
+9824c27679d3: Verifying Checksum
+9824c27679d3: Download complete
+a5585638209e: Download complete
+9824c27679d3: Pull complete
+a5585638209e: Pull complete
+fd372c3c84a2: Pull complete
+828fa206d77b: Verifying Checksum
+828fa206d77b: Download complete
+c1d2dc189e38: Verifying Checksum
+c1d2dc189e38: Download complete
+958a74d6a238: Verifying Checksum
+958a74d6a238: Download complete
+958a74d6a238: Pull complete
+c1d2dc189e38: Pull complete
+828fa206d77b: Pull complete
+bdaad27fd04a: Verifying Checksum
+bdaad27fd04a: Download complete
+bdaad27fd04a: Pull complete
+f23865b38cc6: Verifying Checksum
+f23865b38cc6: Download complete
+f23865b38cc6: Pull complete
+Digest: sha256:d67ea0d64d518b1bb04acde3b00f722ac3e9764b3209a9b0a98924ba35e4b779
+Status: Downloaded newer image for nginx:alpine
+ ---> d6adbc7fd47e
+Step 2/5 : RUN rm -rf /usr/share/nginx/html/*
+ ---> Running in 83270339a155
+ ---> Removed intermediate container 83270339a155
+ ---> 691e694be2bf
+Step 3/5 : COPY dist/ /usr/share/nginx/html
+ ---> aba396d894ae
+Step 4/5 : EXPOSE 80
+ ---> Running in 4d34ccd4d7a5
+ ---> Removed intermediate container 4d34ccd4d7a5
+ ---> 9c9f9939cf7d
+Step 5/5 : CMD ["nginx", "-g", "daemon off;"]
+ ---> Running in 5ca15e7d079a
+ ---> Removed intermediate container 5ca15e7d079a
+ ---> 9bff587980c9
+Successfully built 9bff587980c9
+Successfully tagged akashvb/trend-static-app:latest
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Push to DockerHub)
+[Pipeline] withCredentials
+Masking supported pattern matches of $DOCKER_PASS
+[Pipeline] {
+[Pipeline] sh
++ echo ****
++ docker login -u akashvb --password-stdin
+WARNING! Your password will be stored unencrypted in /var/lib/jenkins/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credential-stores
+
+Login Succeeded
++ docker push akashvb/trend-static-app:latest
+The push refers to repository [docker.io/akashvb/trend-static-app]
+f018c44181af: Preparing
+070dd7dd83b4: Preparing
+57fb2e22a07a: Preparing
+c38bee0b0d28: Preparing
+26081059fc81: Preparing
+daa8ffa7606a: Preparing
+95a6190cfaec: Preparing
+430a7aa99a19: Preparing
+77a17eed5d29: Preparing
+418dccb7d85a: Preparing
+daa8ffa7606a: Waiting
+95a6190cfaec: Waiting
+430a7aa99a19: Waiting
+77a17eed5d29: Waiting
+418dccb7d85a: Waiting
+c38bee0b0d28: Layer already exists
+57fb2e22a07a: Layer already exists
+26081059fc81: Layer already exists
+daa8ffa7606a: Layer already exists
+95a6190cfaec: Layer already exists
+430a7aa99a19: Layer already exists
+77a17eed5d29: Layer already exists
+418dccb7d85a: Layer already exists
+070dd7dd83b4: Pushed
+f018c44181af: Pushed
+latest: digest: sha256:91c8f19cb4ee3a0a173e52799340693eebfa841326d83ca04f7c84294d32ec2f size: 2407
++ docker logout
+Removing login credentials for https://index.docker.io/v1/
+[Pipeline] }
+[Pipeline] // withCredentials
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] sh
++ docker image ls
++ head -n 10
+REPOSITORY                 TAG       IMAGE ID       CREATED          SIZE
+akashvb/trend-static-app   latest    9bff587980c9   18 seconds ago   61.7MB
+nginx                      alpine    d6adbc7fd47e   6 weeks ago      52.5MB
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS
